@@ -3,7 +3,7 @@ class GameBoard:
 	def __init__(self, rows = 6, columns = 8, prevboard = None):
 		self.board = []
 		self.rows = rows
-		self.columns columns
+		self.columns = columns
 
 		# initialize blank board
 		for i in range(0, rows):
@@ -51,21 +51,21 @@ class GameBoard:
 				
 
 	def update(self):
-		newBoard = []
+		new_board = []
 		
-		for i in range(0, rows):
+		for i in range(0, self.rows):
 			new_board.append([])
-			for j in range(0, columns):
+			for j in range(0, self.columns):
 				live_neighbors = self.number_live_neighbors(i,j)
 
 				if (live_neighbors < 2):
-					new_board.board[i].append(False)
+					new_board[i].append(False)
 				elif (live_neighbors == 2):
-					new_board.board[i].append(self.get(i,j))
+					new_board[i].append(self.get(i,j))
 				elif (live_neighbors == 3):
-					new_board.board[i].append(True)
+					new_board[i].append(True)
 				elif (live_neighbors > 3):
-					new_board.board[i].append(False)
+					new_board[i].append(False)
 
 		self.board = new_board
 
