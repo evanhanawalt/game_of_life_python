@@ -1,30 +1,29 @@
 import tkinter as tk
-import GameBoard
-
-class GameOfLifeApp(tk.Frame):
-   
+ 
+class ExampleApp(tk.Frame):
+	''' An example application for TkInter.  Instantiate
+		and call the run method to run. '''
+	def __init__(self, master):
 		# Initialize window using the parent's constructor
 		tk.Frame.__init__(self,
 						  master,
-						  width=500,
-						  height=500)
-		self.model = board
-
+						  width=300,
+						  height=200)
 		# Set the title
-		self.master.title('Game Of Life')
+		self.master.title('TkInter Example')
  
 		# This allows the size specification to take effect
 		self.pack_propagate(0)
  
 		# We'll use the flexible pack layout manager
 		self.pack()
-
+ 
 		# The greeting selector
 		# Use a StringVar to access the selector's value
 		self.greeting_var = tk.StringVar()
 		self.greeting = tk.OptionMenu(self,
 									  self.greeting_var,
-									  'rows: ' + str(self.model.rows),
+									  'hello',
 									  'goodbye',
 									  'heyo')
 		self.greeting_var.set('hello')
@@ -33,7 +32,7 @@ class GameOfLifeApp(tk.Frame):
 		self.recipient_var = tk.StringVar()
 		self.recipient = tk.Entry(self,
 								  textvariable=self.recipient_var)
-		self.recipient_varset('world')
+		self.recipient_var.set('world')
  
 		# The go button
 		self.go_button = tk.Button(self,
@@ -46,40 +45,14 @@ class GameOfLifeApp(tk.Frame):
 		self.recipient.pack(fill=tk.X, side=tk.TOP)
  
 	def print_out(self):
-		#Print a greeting constructed
-		#	from the selections made by
-		#	the user. 
+		''' Print a greeting constructed
+			from the selections made by
+			the user. '''
 		print('%s, %s!' % (self.greeting_var.get().title(),
 						   self.recipient_var.get()))
-
-	def resize(self):
-	  # get new rows 
-	  # get new columns
-	  # create new data model 
-	  # update view
-
-	def clear(self):
-	  # clear all living cells
-
-	def increment(self):
-	  # update model
-	  # update view
-
-	def start_stop_game(self):
-	  # determine if game is running
-
-	  # if running set event to stop, set game to running = False
-
-	  # if not running set event to start, set game to running = True
-
-
-
 	def run(self):
 		''' Run the app '''
 		self.mainloop()
  
-
-board = GameBoard.GameBoard()
-
-app = GameOfLifeApp(tk.Tk(), board)
+app = ExampleApp(tk.Tk())
 app.run()
