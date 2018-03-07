@@ -7,69 +7,81 @@ class GameOfLifeApp(tk.Frame):
 		# Initialize window using the parent's constructor
 		tk.Frame.__init__(self,
 						  master,
-						  width=300,
-						  height=200)
+						  width=630,
+						  height=490)
 		# set data model
 		self.board = board
+		self.is_running = False
 
 		# Set the title
-		self.master.title('TkInter Example')
+		self.master.title('Game of Life')
  
 		# This allows the size specification to take effect
 		self.pack_propagate(0)
  
 		# We'll use the flexible pack layout manager
 		self.pack()
- 
-		# The greeting selector
-		# Use a StringVar to access the selector's value
-		self.greeting_var = tk.StringVar()
-		self.greeting = tk.OptionMenu(self,
-									  self.greeting_var,
-									  'hello',
-									  'goodbye',
-									  'heyo')
-		self.greeting_var.set('hello')
- 
-		# The recipient text entry control and its StringVar
-		self.recipient_var = tk.StringVar()
-		self.recipient = tk.Entry(self,
-								  textvariable=self.recipient_var)
-		self.recipient_var.set('world')
- 
-		# The go button
-		self.go_button = tk.Button(self,
-								   text='Go',
-								   command=self.print_out)
- 
-		# Put the controls on the form
-		self.go_button.pack(fill=tk.X, side=tk.BOTTOM)
-		self.greeting.pack(fill=tk.X, side=tk.TOP)
-		self.recipient.pack(fill=tk.X, side=tk.TOP)
+
+		# Game board frame 
+		self.top_frame = tk.Frame(self, width=630, height=450, background="#e9e9e9")
+		self.top_frame.pack(fill=tk.BOTH, expand=True, anchor="c", padx=20, pady=20)
+
+		# Create cells based on board dimensions
+		self.cells = []
+		for i in range(0, board.rows):
+			self.cells.append([])
+			for j in range(0, board.columns):
+				self.cells[i].append(tk.Button(self.top_frame,
+									width='1', height='1',
+									text=' ',
+									command= lambda row=i, column=j: self.update_cell(row,column))
+				)
+				self.cells[i][j].grid(row=i,column=j)
+
+
+
+		# Buttons and Button Frame
+		self.bottom_frame = tk.Frame(width=630, height=50,)
+		self.bottom_frame.pack(side=tk.BOTTOM)
+
+		# The start/stop button
+		self.start_stop_button = tk.Button(self.bottom_frame,
+								   text='Start',
+								   command=self.start_stop_game)
+
+		# The iterate button
+		self.iterate_button = tk.Button(self.bottom_frame,
+								   text='>',
+								   command=self.iterate_game)
+
+		# The clear button
+		self.clear_button = tk.Button(self.bottom_frame,
+								   text='Clear',
+								   command=self.clear)
+
+		# Put the controls on the frame
+		self.start_stop_button.pack(side=tk.LEFT)
+		self.iterate_button.pack(side=tk.LEFT)
+		self.clear_button.pack(side=tk.LEFT)	
  
 	def print_out(self):
 		''' Print a greeting constructed
 			from the selections made by
 			the user. '''
-		print('%s, %s!' % (self.greeting_var.get().title(),
-						   self.recipient_var.get()))
+		print('gvvdfasd, asdfasd!')
 
-
-	def resize(self):
-		print()
-		# get new row/col size 
-		# create new data model
-		# update view
 
 	def clear(self):
-		print()
 		# clear data model
+		self.board = GameBoard(rows=16, columns=16)
 		# update view
+		self.update_board()
 
 	def iterate_game(self):
-		print()
 		# update data model
+		self.board.update()
 		# update view
+		self.update_board()
 
 	def start_stop_game(self):
 		print()
@@ -77,15 +89,30 @@ class GameOfLifeApp(tk.Frame):
 		# if running, set event to stop, set running = false
 		# if not running, set event to start, set running  = true
 
-	def update_view(self):
-		print()
-		# update board representation 
-		# update start-stop game button
+	def update_board(self):
+		for row in range(0,self.board.rows):
+			for column in range(0,self.board.columns):
+				if self.board.get(row, column):
+					self.cells[row][column]['text'] = 'X'
+				else:
+					self.cells[row][column]['text'] = ' '
+
+		
+
+	def update_cell(self, row, column):
+		if not self.is_running:
+			self.board.set(row, column, not self.board.get(row, column))
+			if self.board.get(row, column):
+				self.cells[row][column]['text'] = 'X'
+			else:
+				self.cells[row][column]['text'] = ' '
 
 	def run(self):
 		''' Run the app '''
 		self.mainloop()
 
-board = GameBoard()
+
+
+board = GameBoard(rows=16, columns=16)
 app = GameOfLifeApp(tk.Tk(), board)
 app.run()
